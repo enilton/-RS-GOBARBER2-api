@@ -1,16 +1,7 @@
 import express from 'express';
-
-import defaultRouter from './routes/default.routes';
-import appointmentsRouter from './routes/appointments.routes';
+import routes from './routes';
 
 const app = express();
-
-app.use(express.json);
-
-app.use('/', defaultRouter);
-
-app.use('/appointments', appointmentsRouter);
-
-app.listen(3333, () => {
-  console.log('started at port 3333');
-});
+app.use(express.json());
+app.use(routes);
+app.listen(3333, () => console.log('Server started at por 3333'));
