@@ -1,29 +1,23 @@
 import { startOfHour } from 'date-fns'
+import { getCustomRepository } from 'typeorm';
 
 import Appointment from '../models/Appointments';
 import AppointmentsRepository from '../repositories/AppointmentsRepository';
 
-interface CreateAppointmentRequestDTO {
-    provider: string,
-    date: Date,
-}
 
 class CreateAppointmentService {
 
-    private appointmentsRepository: AppointmentsRepository;
+    public async execute({ date, provider }: Omit<Appointment,'id'>): Promise<Appointment> {
+        const appointmentsRepository = getCustomRepository(AppointmentsRepository);
 
-    constructor(appointmentsRepository: AppointmentsRepository){
-        this.appointmentsRepository = appointmentsRepository;
-    }
-
-    public execute({ date, provider }: CreateAppointmentRequestDTO): Appointment {
         const appointmentDate = startOfHour(date);
 
-        if (this.appointmentsRepository.findByDate(appointmentDate)){
+        if (await appointmentsRepository.findByDate(appointmentDate)){
            throw Error('this appointment is aleread boked');
         }
 
-        const appointment = this.appointmentsRepository.create({ provider, date: appointmentDate });
+        const appointment = await appointmentsRepository.create({ provider, date: appointmentDate });
+        await appointmentsRepository.save(appointment);
         return appointment;
     }
 }

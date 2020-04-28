@@ -1,0 +1,18 @@
+{
+    "type":"postgres",
+    "host":"drona.db.elephantsql.com",
+    "port": 5432,
+    "username": "asbvzqnc",
+    "password": "qaabC-3HZb8BtSjEF9q7unjDfmiwu4a-",
+    "database": "asbvzqnc",
+    "entities":[
+        "./src/models/*.ts"
+    ],
+    "migrations":[
+        "./src/database/migrations/*.ts"
+    ],
+    "cli":{
+        "migrationsDir":"./src/database/migrations"
+    }
+
+}
