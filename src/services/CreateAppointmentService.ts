@@ -3,7 +3,7 @@ import { getCustomRepository } from 'typeorm';
 
 import Appointment from '../models/Appointments';
 import AppointmentsRepository from '../repositories/AppointmentsRepository';
-
+import AppError from '../errors/AppError';
 
 interface createAppointmentRequest {
     date: Date,
@@ -18,7 +18,7 @@ class CreateAppointmentService {
         const existsAppointment = await appointmentsRepository.findByDate(appointmentDate)
 ;
         if (existsAppointment){
-           throw Error('this appointment is aleread boked');
+           throw new AppError('this appointment is aleread boked');
         }
 
         const appointment = appointmentsRepository.create({ provider_id, date: appointmentDate });
